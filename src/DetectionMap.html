@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShieldHer – Detection Map</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="./output.css" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-gray-950 text-gray-200 h-screen flex">
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 min-w-[16rem] bg-gray-900 border-r border-gray-800 p-5 flex flex-col">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3 mb-7">
+      <i class="fa-solid fa-shield-halved text-blue-700 text-3xl mb-8"></i>
+      <h1 class="text-2xl font-bold text-white mb-8">Shield<span class="text-blue-700">Her</span></h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 space-y-3 text-gray-300">
+      <a href="dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Dashboard</a>
+      <a href="Emergency Alert.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Emergency Alert</a>
+      <a href="DetectionGuide.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Detection Guide</a>
+      <a href="WifiScanner.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">WiFi Scanner</a>
+      <a href="SafetyChecklist.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Safety Checklist</a>
+      <a href="SubmitReport.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Submit Report</a>
+      <a href="DetectionMap.html" class="block px-3 py-2 rounded-lg bg-gray-800 text-white">Detection Map</a>
+      <a href="ScanHistory.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Scan History</a>
+      <a href="Alerts.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Alerts</a>
+      <a href="Settings.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Settings</a>
+    </nav>
+
+    <!-- User -->
+    <div class="text-sm text-gray-400 mt-6">
+      Logged in as <span class="text-white">john</span>
+      <button class="block mt-3 text-red-400 hover:text-red-300">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 h-full overflow-y-auto p-10">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-white flex items-center gap-2">
+        <i class="fa-solid fa-location-dot text-blue-600"></i>
+        Detection Map
+      </h2>
+      <p class="text-gray-400">
+        View reported unsafe locations in your area
+      </p>
+    </div>
+
+    <!-- Google Map -->
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl mb-8 overflow-hidden">
+      <div id="map" class="w-full h-96"></div>
+    </div>
+
+    <!-- Reported Locations -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-white mb-2">Reported Locations</h3>
+
+      <div id="dynamicReports" class="space-y-4"></div>
+
+      <button onclick="clearReports()"
+              class="mt-4 px-4 py-2 bg-red-600 hover:bg-red-500 rounded-xl text-white">
+        Delete All Reports
+      </button>
+      <p id="locationCount" class="text-gray-400 mt-2"></p>
+    </div>
+  </main>
+
+  <!-- SCRIPTS -->
+<script>
+let map;
+
+function initMap() {
+  // Initialize map with a default center
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 20.5937, lng: 78.9629 }, // India center fallback
+    zoom: 5,
+    styles: [
+      { elementType: "geometry", stylers: [{ color: "#1f2937" }] },
+      { elementType: "labels.text.stroke", stylers: [{ color: "#111827" }] },
+      { elementType: "labels.text.fill", stylers: [{ color: "#9ca3af" }] }
+    ]
+  });
+
+  // Try to get the user's current location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        // Move map to user location
+        map.setCenter(userLocation);
+        map.setZoom(14);
+
+        // Add a marker for user's location
+        new google.maps.Marker({
+          position: userLocation,
+          map: map,
+          title: "Your Location",
+          icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      },
+      function(error) {
+        console.error("Error getting location: ", error);
+        alert("Could not get your location. Make sure location is enabled.");
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by your browser.");
+  }
+
+  // Load existing unsafe location markers
+  loadMarkers();
+}
+
+// Example of existing markers
+function loadMarkers() {
+  const reports = JSON.parse(localStorage.getItem("reports")) || [];
+  reports.forEach(r => {
+    if (!r.lat || !r.lng) return;
+
+    new google.maps.Marker({
+      position: { lat: r.lat, lng: r.lng },
+      map,
+      title: r.location,
+      icon: r.type.includes("WiFi")
+        ? "https://maps.google.com/mapfiles/ms/icons/orange-dot.png"
+        : "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+    });
+  });
+}
+</script>
+
+
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaUt4Ydc2WqTtz23VfVor6_7-jH_V3V3U&callback=initMap" async defer></script>
+
+</body>
+</html>
+
+</body>
+</html>

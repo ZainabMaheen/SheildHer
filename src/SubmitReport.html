@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShieldHer – Submit Report</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="./output.css" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-gray-950 text-gray-200 h-screen flex">
+
+<!-- SIDEBAR (unchanged) -->
+<aside class="w-64 min-w-[16rem] bg-gray-900 border-r border-gray-800 p-5 flex flex-col">
+  <div class="flex items-center gap-3 mb-7">
+    <i class="fa-solid fa-shield-halved text-blue-700 text-3xl mb-8"></i>
+    <h1 class="text-2xl font-bold text-white mb-8">Shield<span class="text-blue-700">Her</span></h1>
+  </div>
+
+  <nav class="flex-1 space-y-3 text-gray-300">
+    <a href="dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Dashboard</a>
+    <a href="Emergency Alert.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Emergency Alert</a>
+    <a href="DetectionGuide.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Detection Guide</a>
+    <a href="WifiScanner.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">WiFi Scanner</a>
+    <a href="SafetyChecklist.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Safety Checklist</a>
+    <a href="SubmitReport.html" class="block px-3 py-2 rounded-lg bg-gray-800 text-white">Submit Report</a>
+    <a href="DetectionMap.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Detection Map</a>
+    <a href="ScanHistory.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Scan History</a>
+    <a href="Alerts.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Alerts</a>
+    <a href="Settings.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Settings</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="flex-1 p-10 overflow-y-auto">
+
+  <h2 class="text-3xl font-bold text-white mb-6">
+    <i class="fa-solid fa-file-circle-exclamation text-blue-600"></i>
+    Submit Detection Report
+  </h2>
+
+  <div class="max-w-3xl bg-gray-900 border border-gray-800 rounded-2xl p-8 space-y-6">
+
+    <input id="location" type="text"
+      placeholder="Location details"
+      class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3" />
+
+    <select id="type"
+      class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+      <option>Hidden Camera</option>
+      <option>Suspicious WiFi Device</option>
+      <option>Audio Recording Device</option>
+      <option>Other</option>
+    </select>
+
+    <textarea id="description" rows="4"
+      placeholder="Description"
+      class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3"></textarea>
+
+    <input id="contact" type="email"
+      placeholder="Email (optional)"
+      class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3" />
+
+    <label class="flex items-center gap-2 text-gray-300">
+      <input id="anonymous" type="checkbox" class="accent-blue-600">
+      Report anonymously
+    </label>
+
+    <button onclick="submitReport()"
+      class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-semibold">
+      Submit Report
+    </button>
+
+  </div>
+</main>
+
+<script>
+function submitReport() {
+  const report = {
+    location: document.getElementById("location").value,
+    type: document.getElementById("type").value,
+    date: new Date().toISOString().split("T")[0],
+    severity: Math.floor(Math.random() * 5) + 1
+  };
+
+  if (!report.location) {
+    alert("Please enter location details");
+    return;
+  }
+
+  const reports = JSON.parse(localStorage.getItem("reports")) || [];
+  reports.push(report);
+  localStorage.setItem("reports", JSON.stringify(reports));
+
+  alert("Report submitted successfully!");
+  window.location.href = "DetectionMap.html";
+}
+</script>
+
+</body>
+</html>

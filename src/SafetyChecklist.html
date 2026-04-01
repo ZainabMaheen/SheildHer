@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShieldHer – Safety Checklists</title>
+
+  <link href="./output.css" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-gray-950 text-gray-200 min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-gray-900 border-r border-gray-800 p-5 flex flex-col">
+  <div class="flex items-center gap-3 mb-8">
+    <i class="fa-solid fa-shield-halved text-blue-700 text-3xl mb-8"></i>
+    <h1 class="text-2xl font-bold text-white mb-8">Shield<span class="text-blue-700">Her</span></h1>
+  </div>
+
+  <nav class="flex-1 space-y-3 text-gray-300">
+    <a href="dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Dashboard</a>
+    <a href="Emergency Alert.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Emergency Alert</a>
+    <a href="DetectionGuide.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Detection Guide</a>
+    <a href="WifiScanner.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">WiFi Scanner</a>
+    <a href="SafetyChecklist.html" class="block px-3 py-2 rounded-lg bg-gray-800 text-white">Safety Checklists</a>
+    <a href="SubmitReport.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Submit Report</a>
+    <a href="DetectionMap.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Detection Map</a>
+    <a href="ScanHistory.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Scan History</a>
+    <a href="Alerts.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Alerts</a>
+    <a href="Settings.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Settings</a>
+  </nav>
+
+  <div class="mt-6 text-sm text-gray-400">
+    Logged in as <span class="text-white">john</span>
+    <a href="index.html">
+      <button class="block mt-3 text-red-400 hover:text-red-300">
+        Sign Out
+      </button>
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="flex-1 p-8 overflow-y-auto">
+
+  <!-- HEADER -->
+  <div class="mb-8">
+    <h2 class="text-4xl font-bold text-white">Safety Checklists</h2>
+    <p class="text-gray-400">Comprehensive checklists to keep you safe</p>
+  </div>
+
+  <div class="space-y-8">
+
+    <!-- CHECKLIST CARD -->
+    <div class="checklist-card bg-gray-900 border border-gray-800 rounded-2xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h3 class="text-xl font-semibold text-white">Pre-Travel Safety Checklist</h3>
+          <p class="text-gray-400 text-sm">Complete this before traveling to unfamiliar places</p>
+        </div>
+        <div class="text-right">
+          <p class="percent text-blue-400 font-bold text-lg">0%</p>
+          <p class="count text-xs text-gray-400">0 of 5</p>
+        </div>
+      </div>
+
+      <ul class="space-y-3 checklist">
+        <li><input type="checkbox" class="mr-2"> Review hotel/accommodation reviews for security issues</li>
+        <li><input type="checkbox" class="mr-2"> Save emergency contact numbers locally</li>
+        <li><input type="checkbox" class="mr-2"> Enable location sharing with trusted contacts</li>
+        <li><input type="checkbox" class="mr-2"> Charge all devices and bring portable chargers</li>
+        <li><input type="checkbox" class="mr-2"> Plan safe routes and transportation</li>
+      </ul>
+
+      <p class="review mt-4 text-sm text-gray-400"></p>
+    </div>
+
+    <!-- ROOM INSPECTION -->
+    <div class="checklist-card bg-gray-900 border border-gray-800 rounded-2xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h3 class="text-xl font-semibold text-white">Room Inspection Checklist</h3>
+          <p class="text-gray-400 text-sm">Check rooms upon arrival at hotels or rentals</p>
+        </div>
+        <div class="text-right">
+          <p class="percent text-blue-400 font-bold text-lg">0%</p>
+          <p class="count text-xs text-gray-400">0 of 7</p>
+        </div>
+      </div>
+
+      <ul class="space-y-3 checklist">
+        <li><input type="checkbox" class="mr-2"> Scan entire room with flashlight for lens reflections</li>
+        <li><input type="checkbox" class="mr-2"> Check mirrors for two-way mirror indicators</li>
+        <li><input type="checkbox" class="mr-2"> Inspect light fixtures, smoke detectors, and vents</li>
+        <li><input type="checkbox" class="mr-2"> Check bathroom for suspicious devices or holes</li>
+        <li><input type="checkbox" class="mr-2"> Examine decorative items and electronics</li>
+        <li><input type="checkbox" class="mr-2"> Look for WiFi networks with suspicious names</li>
+        <li><input type="checkbox" class="mr-2"> Check door locks and security features</li>
+      </ul>
+
+      <p class="review mt-4 text-sm text-gray-400"></p>
+    </div>
+
+    <!-- DAILY ROUTINE -->
+    <div class="checklist-card bg-gray-900 border border-gray-800 rounded-2xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h3 class="text-xl font-semibold text-white">Daily Safety Routine</h3>
+          <p class="text-gray-400 text-sm">Maintain these habits daily for protection</p>
+        </div>
+        <div class="text-right">
+          <p class="percent text-blue-400 font-bold text-lg">0%</p>
+          <p class="count text-xs text-gray-400">0 of 6</p>
+        </div>
+      </div>
+
+      <ul class="space-y-3 checklist">
+        <li><input type="checkbox" class="mr-2"> Check new or unfamiliar objects in your space</li>
+        <li><input type="checkbox" class="mr-2"> Be aware of your surroundings</li>
+        <li><input type="checkbox" class="mr-2"> Verify WiFi network names</li>
+        <li><input type="checkbox" class="mr-2"> Keep emergency contacts accessible</li>
+        <li><input type="checkbox" class="mr-2"> Cover webcams and cameras when not in use</li>
+        <li><input type="checkbox" class="mr-2"> Report any suspicious activity</li>
+      </ul>
+
+      <p class="review mt-4 text-sm text-gray-400"></p>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- SCRIPT -->
+<script>
+document.querySelectorAll(".checklist-card").forEach(card => {
+  const checkboxes = card.querySelectorAll("input[type='checkbox']");
+  const percentEl = card.querySelector(".percent");
+  const countEl = card.querySelector(".count");
+  const reviewEl = card.querySelector(".review");
+  const total = checkboxes.length;
+
+  function updateChecklist() {
+    const checked = [...checkboxes].filter(cb => cb.checked).length;
+    const percent = Math.round((checked / total) * 100);
+
+    percentEl.textContent = percent + "%";
+    countEl.textContent = `${checked} of ${total}`;
+
+    if (percent === 100) {
+      reviewEl.textContent = "✅ Excellent! You are fully prepared.";
+      reviewEl.className = "review mt-4 text-sm text-green-400";
+    } else if (percent >= 70) {
+      reviewEl.textContent = "👍 Good job! Almost complete.";
+      reviewEl.className = "review mt-4 text-sm text-blue-400";
+    } else if (percent >= 30) {
+      reviewEl.textContent = "⚠️ Decent progress. Consider completing more steps.";
+      reviewEl.className = "review mt-4 text-sm text-yellow-400";
+    } else {
+      reviewEl.textContent = "❗ Needs attention. Safety steps are incomplete.";
+      reviewEl.className = "review mt-4 text-sm text-red-400";
+    }
+  }
+
+  checkboxes.forEach(cb => cb.addEventListener("change", updateChecklist));
+});
+</script>
+
+</body>
+</html>

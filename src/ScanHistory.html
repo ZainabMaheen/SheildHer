@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShieldHer – Scan History</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+<link href="./output.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<body class="bg-gray-950 text-gray-200 h-screen flex">
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 min-w-[16rem] bg-gray-900 border-r border-gray-800 p-5 flex flex-col">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3 mb-7">
+      <i class="fa-solid fa-shield-halved text-blue-700 text-3xl mb-8"></i>
+      <h1 class="text-2xl font-bold text-white mb-8">Shield<span class="text-blue-700">Her</span></h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 space-y-3 text-gray-300">
+      <a href="dashboard.html"       class="block px-3 py-2 rounded-lg hover:bg-gray-800">Dashboard</a>
+      <a href="Emergency Alert.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Emergency Alert</a>
+      <a href="DetectionGuide.html"  class="block px-3 py-2 rounded-lg hover:bg-gray-800">Detection Guide</a>
+      <a href="WifiScanner.html"     class="block px-3 py-2 rounded-lg hover:bg-gray-800">WiFi Scanner</a>
+      <a href="SafetyChecklist.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Safety Checklist</a>
+      <a href="SubmitReport.html"     class="block px-3 py-2 rounded-lg hover:bg-gray-800">Submit Report</a>
+      <a href="DetectionMap.html"    class="block px-3 py-2 rounded-lg hover:bg-gray-800">Detection Map</a>      
+      <a href="ScanHistory.html"     class="block px-3 py-2 rounded-lg bg-gray-800 text-white">Scan History</a>
+      <a href="Alerts.html"          class="block px-3 py-2 rounded-lg hover:bg-gray-800">Alerts</a>
+      <a href="Settings.html"        class="block px-3 py-2 rounded-lg hover:bg-gray-800">Settings</a>
+    </nav>
+
+    <!-- User -->
+ <div class="mt-6 text-sm text-gray-400">
+    Logged in as <span class="text-white">john</span>
+    <a href="index.html">
+    <button class="block mt-3 text-red-400 hover:text-red-300">
+      Sign Out
+    </button></a>
+  </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 overflow-y-auto p-8">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-3xl font-bold text-white">Scan History</h2>
+        <p class="text-gray-400">View all previous WiFi and device scans</p>
+      </div>
+      <button class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm">
+        <i class="fa-solid fa-wifi mr-2"></i>New Scan
+      </button>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="flex gap-3 mb-6">
+      <button class="px-4 py-2 rounded-full bg-blue-600 text-white text-sm">All</button>
+      <button class="px-4 py-2 rounded-full bg-gray-800 hover:bg-gray-700 text-sm">Safe</button>
+      <button class="px-4 py-2 rounded-full bg-gray-800 hover:bg-gray-700 text-sm">Suspicious</button>
+    </div>
+
+    <!-- SCAN CARD -->
+    <div class="space-y-5">
+
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex justify-between items-center">
+        <div class="flex gap-4">
+          <i class="fa-solid fa-wifi text-blue-500 text-2xl mt-1"></i>
+          <div>
+            <h3 class="text-lg font-semibold text-white">Network Scan</h3>
+            <p class="text-sm text-gray-400">Dec 14, 2025 • 07:58 PM</p>
+            <div class="flex gap-6 mt-2 text-sm">
+              <span>Total Devices: <b class="text-white">5</b></span>
+              <span class="text-red-400">Suspicious: <b>2</b></span>
+            </div>
+          </div>
+        </div>
+        <i class="fa-solid fa-triangle-exclamation text-red-500 text-2xl"></i>
+      </div>
+
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex justify-between items-center">
+        <div class="flex gap-4">
+          <i class="fa-solid fa-wifi text-green-500 text-2xl mt-1"></i>
+          <div>
+            <h3 class="text-lg font-semibold text-white">Network Scan</h3>
+            <p class="text-sm text-gray-400">Dec 13, 2025 • 09:50 AM</p>
+            <div class="flex gap-6 mt-2 text-sm">
+              <span>Total Devices: <b class="text-white">4</b></span>
+              <span class="text-green-400">Suspicious: <b>0</b></span>
+            </div>
+          </div>
+        </div>
+        <span class="px-4 py-1 rounded-full bg-green-900 text-green-400 text-sm">Safe</span>
+      </div>
+
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 flex justify-between items-center">
+        <div class="flex gap-4">
+          <i class="fa-solid fa-wifi text-blue-500 text-2xl mt-1"></i>
+          <div>
+            <h3 class="text-lg font-semibold text-white">Network Scan</h3>
+            <p class="text-sm text-gray-400">Dec 7, 2025 • 09:14 PM</p>
+            <div class="flex gap-6 mt-2 text-sm">
+              <span>Total Devices: <b class="text-white">6</b></span>
+              <span class="text-red-400">Suspicious: <b>1</b></span>
+            </div>
+          </div>
+        </div>
+        <i class="fa-solid fa-triangle-exclamation text-red-500 text-2xl"></i>
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>
