@@ -136,6 +136,27 @@
     window.location.href = "login.html";
   }
 </script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCw3kr1M6ZYBFzRH8w18BE0S7DV8-rkGTY",
+  authDomain: "shieldher-14107.firebaseapp.com",
+  databaseURL: "https://shieldher-14107-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "shieldher-14107",
+  storageBucket: "shieldher-14107.firebasestorage.app",
+  messagingSenderId: "1085993060746",
+  appId: "1:1085993060746:web:81cf85d4fb642ad7ae6073"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+</script>
+<script>
+firebase.database().ref("test").set({
+  message: "Hello Zainab 🔥"
+});
+</script>
 </body>
 </html>
