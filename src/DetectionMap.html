@@ -4,26 +4,21 @@
   <meta charset="UTF-8" />
   <title>ShieldHer – Detection Map</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./output.css" rel="stylesheet">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-
 <body class="bg-gray-950 text-gray-200 h-screen flex">
 
   <!-- SIDEBAR -->
   <aside class="w-64 min-w-[16rem] bg-gray-900 border-r border-gray-800 p-5 flex flex-col">
-
-    <!-- Logo -->
     <div class="flex items-center gap-3 mb-7">
       <i class="fa-solid fa-shield-halved text-blue-700 text-3xl mb-8"></i>
       <h1 class="text-2xl font-bold text-white mb-8">Shield<span class="text-blue-700">Her</span></h1>
     </div>
 
-    <!-- Navigation -->
     <nav class="flex-1 space-y-3 text-gray-300">
       <a href="dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Dashboard</a>
       <a href="Emergency Alert.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Emergency Alert</a>
@@ -37,17 +32,14 @@
       <a href="Settings.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Settings</a>
     </nav>
 
-    <!-- User -->
     <div class="text-sm text-gray-400 mt-6">
       Logged in as <span class="text-white">john</span>
       <button class="block mt-3 text-red-400 hover:text-red-300">Sign Out</button>
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main class="flex-1 h-full overflow-y-auto p-10">
-
-    <!-- Header -->
     <div class="mb-8">
       <h2 class="text-3xl font-bold text-white flex items-center gap-2">
         <i class="fa-solid fa-location-dot text-blue-600"></i>
@@ -58,99 +50,90 @@
       </p>
     </div>
 
-    <!-- Google Map -->
+    <!-- Map -->
     <div class="bg-gray-900 border border-gray-800 rounded-2xl mb-8 overflow-hidden">
       <div id="map" class="w-full h-96"></div>
     </div>
 
-    <!-- Reported Locations -->
+    <!-- Report List -->
     <div class="space-y-4">
       <h3 class="text-lg font-semibold text-white mb-2">Reported Locations</h3>
-
       <div id="dynamicReports" class="space-y-4"></div>
-
-      <button onclick="clearReports()"
-              class="mt-4 px-4 py-2 bg-red-600 hover:bg-red-500 rounded-xl text-white">
-        Delete All Reports
-      </button>
       <p id="locationCount" class="text-gray-400 mt-2"></p>
     </div>
   </main>
 
-  <!-- SCRIPTS -->
-<script>
-let map;
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-function initMap() {
-  // Initialize map with a default center
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 20.5937, lng: 78.9629 }, // India center fallback
-    zoom: 5,
-    styles: [
-      { elementType: "geometry", stylers: [{ color: "#1f2937" }] },
-      { elementType: "labels.text.stroke", stylers: [{ color: "#111827" }] },
-      { elementType: "labels.text.fill", stylers: [{ color: "#9ca3af" }] }
-    ]
-  });
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCw3kr1M6ZYBFzRH8w18BE0S7DV8-rkGTY",
+      authDomain: "shieldher-14107.firebaseapp.com",
+      databaseURL: "https://shieldher-14107-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "shieldher-14107",
+      storageBucket: "shieldher-14107.firebasestorage.app",
+      messagingSenderId: "1085993060746",
+      appId: "1:1085993060746:web:81cf85d4fb642ad7ae6073"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+  </script>
 
-  // Try to get the user's current location
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function(position) {
-        const userLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
+  <!-- Google Maps -->
+  <script>
+    let map;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 20.5937, lng: 78.9629 },
+        zoom: 5,
+        styles: [
+          { elementType: "geometry", stylers: [{ color: "#1f2937" }] },
+          { elementType: "labels.text.stroke", stylers: [{ color: "#111827" }] },
+          { elementType: "labels.text.fill", stylers: [{ color: "#9ca3af" }] }
+        ]
+      });
 
-        // Move map to user location
-        map.setCenter(userLocation);
-        map.setZoom(14);
-
-        // Add a marker for user's location
-        new google.maps.Marker({
-          position: userLocation,
-          map: map,
-          title: "Your Location",
-          icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const userLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          map.setCenter(userLoc); map.setZoom(14);
+          new google.maps.Marker({ position: userLoc, map, title:"You", icon:"https://maps.google.com/mapfiles/ms/icons/blue-dot.png" });
         });
-      },
-      function(error) {
-        console.error("Error getting location: ", error);
-        alert("Could not get your location. Make sure location is enabled.");
       }
-    );
-  } else {
-    alert("Geolocation is not supported by your browser.");
-  }
 
-  // Load existing unsafe location markers
-  loadMarkers();
-}
+      // Listen to Firebase for reports
+      db.ref("reports").on("child_added", snapshot => {
+        const report = snapshot.val();
 
-// Example of existing markers
-function loadMarkers() {
-  const reports = JSON.parse(localStorage.getItem("reports")) || [];
-  reports.forEach(r => {
-    if (!r.lat || !r.lng) return;
+        // Add marker if coordinates exist
+        if(report.lat && report.lng){
+          new google.maps.Marker({
+            position: {lat: report.lat, lng: report.lng},
+            map,
+            title: report.location,
+            icon: report.type.includes("WiFi") ? "https://maps.google.com/mapfiles/ms/icons/orange-dot.png" : "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+          });
+        }
 
-    new google.maps.Marker({
-      position: { lat: r.lat, lng: r.lng },
-      map,
-      title: r.location,
-      icon: r.type.includes("WiFi")
-        ? "https://maps.google.com/mapfiles/ms/icons/orange-dot.png"
-        : "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
-    });
-  });
-}
-</script>
+        // Add report to list
+        const dynamicReports = document.getElementById("dynamicReports");
+        const div = document.createElement("div");
+        div.className = "bg-gray-900 rounded-2xl p-4 border border-gray-800";
+        div.innerHTML = `
+          <p><strong>Location:</strong> ${report.location}</p>
+          <p><strong>Type:</strong> ${report.type}</p>
+          <p><strong>Description:</strong> ${report.description || "N/A"}</p>
+          <p><strong>Time:</strong> ${report.time}</p>
+        `;
+        dynamicReports.prepend(div);
 
-
-<!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaUt4Ydc2WqTtz23VfVor6_7-jH_V3V3U&callback=initMap" async defer></script>
-
-</body>
-</html>
-
+        // Update count
+        document.getElementById("locationCount").innerText = `Total Reports: ${dynamicReports.children.length}`;
+      });
+    }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaUt4Ydc2WqTtz23VfVor6_7-jH_V3V3U&callback=initMap" async defer></script>
 </body>
 </html>

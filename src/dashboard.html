@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <title>ShieldHer Dashboard</title>
-<link href="./output.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  <link href="./output.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-
 <body class="bg-gray-950 text-gray-200 min-h-screen flex">
 
 <!-- SIDEBAR -->
 <aside class="w-64 bg-gray-900 border-r border-gray-800 p-5 flex flex-col">
   <div class="flex items-center gap-3 mb-8">
-  <i class="fa-solid fa-shield-halved text-blue-700 text-3xl relative mb-8"></i>
-  <h1 class="text-2xl font-bold text-white mb-8">Shield<span class="text-blue-700">Her</span></h1>
+    <i class="fa-solid fa-shield-halved text-blue-700 text-3xl relative mb-8"></i>
+    <h1 class="text-2xl font-bold text-white mb-8">Shield<span class="text-blue-700">Her</span></h1>
   </div>
   <nav class="flex-1 space-y-3 text-gray-300">
     <a href="dashboard.html" class="block px-3 py-2 rounded-lg bg-gray-800 text-white">Dashboard</a>
@@ -32,15 +30,13 @@
   <div class="mt-6 text-sm text-gray-400">
     Logged in as <span id="sidebarUser" class="text-white"></span>
     <a href="index.html">
-    <button class="block mt-3 text-red-400 hover:text-red-300">
-      Sign Out
-    </button></a>
+      <button class="block mt-3 text-red-400 hover:text-red-300">Sign Out</button>
+    </a>
   </div>
 </aside>
 
 <!-- MAIN CONTENT -->
 <main class="flex-1 p-8 overflow-y-auto">
-
   <!-- HEADER -->
   <div class="flex justify-between items-center mb-8">
     <div>
@@ -50,13 +46,10 @@
       <p class="text-gray-400">Your privacy & safety overview</p>
     </div>
     <div class="flex items-center space-x-4">
-      <button class="bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700">
-        🔔
-      </button>
+      <button class="bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700">🔔</button>
       <a href="Settings.html">
-      <button class="bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700">
-        ⚙️
-      </button></a>
+        <button class="bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700">⚙️</button>
+      </a>
     </div>
   </div>
 
@@ -64,19 +57,19 @@
   <div class="grid md:grid-cols-4 gap-6 mb-10">
     <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
       <p class="text-gray-400">Detections This Month</p>
-      <h3 class="text-3xl font-bold text-white mt-2">0</h3>
+      <h3 id="detectionsCount" class="text-3xl font-bold text-white mt-2">0</h3>
     </div>
     <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
       <p class="text-gray-400">Unsafe Locations</p>
-      <h3 class="text-3xl font-bold text-white mt-2">0</h3>
+      <h3 id="unsafeCount" class="text-3xl font-bold text-white mt-2">0</h3>
     </div>
     <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
       <p class="text-gray-400">Reports Submitted</p>
-      <h3 class="text-3xl font-bold text-white mt-2">0</h3>
+      <h3 id="reportsCount" class="text-3xl font-bold text-white mt-2">0</h3>
     </div>
     <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
       <p class="text-gray-400">Active Alerts</p>
-      <h3 class="text-3xl font-bold text-white mt-2">0</h3>
+      <h3 id="alertsCount" class="text-3xl font-bold text-white mt-2">0</h3>
     </div>
   </div>
 
@@ -86,46 +79,46 @@
   <div class="grid md:grid-cols-3 gap-6 mb-10">
     <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
       <h4 class="text-lg font-semibold text-white mb-2">Report Detection</h4>
-      <p class="text-gray-400 mb-4">
-        Submit a new hidden camera detection
-      </p>
-      <button class="w-full bg-blue-700 hover:bg-cyan-900 text-white py-2 rounded-lg">
+      <p class="text-gray-400 mb-4">Submit a new hidden camera detection</p>
+      <input type="text" id="locationInput" placeholder="Enter location" class="p-2 rounded border mb-2 w-full">
+      <button onclick="submitReport()" class="w-full bg-blue-700 hover:bg-cyan-900 text-white py-2 rounded-lg">
         Submit Report
       </button>
     </div>
-
     <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
       <h4 class="text-lg font-semibold text-white mb-2">View Map</h4>
-      <p class="text-gray-400 mb-4">
-        See unsafe locations nearby
-      </p>
-      <button class="w-full bg-gray-800 hover:bg-gray-700 text-white py-2 rounded-lg">
-        Open Map
-      </button>
+      <p class="text-gray-400 mb-4">See unsafe locations nearby</p>
+      <button class="w-full bg-gray-800 hover:bg-gray-700 text-white py-2 rounded-lg">Open Map</button>
     </div>
-
     <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
       <h4 class="text-lg font-semibold text-white mb-2">View History</h4>
-      <p class="text-gray-400 mb-4">
-        Check your past scans
-      </p>
-      <button class="w-full bg-gray-800 hover:bg-gray-700 text-white py-2 rounded-lg">
-        View History
-      </button>
+      <p class="text-gray-400 mb-4">Check your past scans</p>
+      <button class="w-full bg-gray-800 hover:bg-gray-700 text-white py-2 rounded-lg">View History</button>
     </div>
   </div>
-    <div>
-    <h3 class="text-xl font-semibold text-white mb-4">Recent Activity</h3>
-    <div class="grid md:grid-cols-1 gap-6 mb-10">
-    <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
-      <h4 class="text-lg font-semibold text-gray-400 mb-2 ">No recent activity yet. Start by submitting a report or exploring the map.</h4>
-    </div>
-</main>
-<script>
-  const user = JSON.parse(localStorage.getItem("User"));
 
+  <!-- Recent Activity -->
+  <div>
+    <h3 class="text-xl font-semibold text-white mb-4">Recent Activity</h3>
+    <div id="recentActivity" class="grid md:grid-cols-1 gap-6 mb-10">
+      <div class="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+        <h4 class="text-lg font-semibold text-gray-400 mb-2">
+          No recent activity yet. Start by submitting a report or exploring the map.
+        </h4>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+  // User Info
+  const user = JSON.parse(localStorage.getItem("User"));
   if (!user) {
-    window.location.href = "login.html"; // or index.html
+    window.location.href = "login.html";
   } else {
     document.getElementById("userName").innerText = user.fullname;
     document.getElementById("sidebarUser").innerText = user.fullname;
@@ -135,28 +128,65 @@
     localStorage.removeItem("User");
     window.location.href = "login.html";
   }
-</script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyCw3kr1M6ZYBFzRH8w18BE0S7DV8-rkGTY",
-  authDomain: "shieldher-14107.firebaseapp.com",
-  databaseURL: "https://shieldher-14107-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "shieldher-14107",
-  storageBucket: "shieldher-14107.firebasestorage.app",
-  messagingSenderId: "1085993060746",
-  appId: "1:1085993060746:web:81cf85d4fb642ad7ae6073"
-};
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCw3kr1M6ZYBFzRH8w18BE0S7DV8-rkGTY",
+    authDomain: "shieldher-14107.firebaseapp.com",
+    databaseURL: "https://shieldher-14107-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "shieldher-14107",
+    storageBucket: "shieldher-14107.firebasestorage.app",
+    messagingSenderId: "1085993060746",
+    appId: "1:1085993060746:web:81cf85d4fb642ad7ae6073"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-</script>
-<script>
-firebase.database().ref("test").set({
-  message: "Hello Zainab 🔥"
-});
+  // Listen for new reports
+  const recentActivityDiv = document.getElementById("recentActivity");
+
+  db.ref("reports").on("child_added", snapshot => {
+    const report = snapshot.val();
+    console.log(report);
+
+    // Update Recent Activity
+    const reportCard = document.createElement("div");
+    reportCard.className = "bg-gray-900 rounded-2xl p-6 border border-gray-800";
+    reportCard.innerHTML = `
+      <h4 class="text-lg font-semibold text-gray-400 mb-2">
+        Location: ${report.location} <br>
+        Time: ${report.time} <br>
+        Status: ${report.status}
+      </h4>
+    `;
+    recentActivityDiv.prepend(reportCard);
+
+    // Update counts dynamically
+    db.ref("reports").once("value", snap => {
+      const reports = snap.val();
+      const totalReports = reports ? Object.keys(reports).length : 0;
+      document.getElementById("detectionsCount").innerText = totalReports;
+      document.getElementById("reportsCount").innerText = totalReports;
+      document.getElementById("unsafeCount").innerText = totalReports; // For now, all are unsafe
+      document.getElementById("alertsCount").innerText = totalReports; // Optional logic for alerts
+    });
+  });
+
+  // Submit report manually
+  function submitReport() {
+    const location = document.getElementById("locationInput").value;
+    if(location === "") {
+      alert("Please enter a location!");
+      return;
+    }
+    db.ref("reports").push({
+      location: location,
+      time: new Date().toLocaleString(),
+      status: "unsafe"
+    });
+    alert("Report submitted!");
+    document.getElementById("locationInput").value = "";
+  }
 </script>
 </body>
 </html>

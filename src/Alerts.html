@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-gray-950 text-gray-200 h-screen flex">
 
@@ -36,17 +36,15 @@
       <a href="Settings.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Settings</a>
     </nav>
 
-    <!-- User Info -->
- <div class="mt-6 text-sm text-gray-400">
-    Logged in as <span class="text-white">john</span>
-    <a href="index.html">
-    <button class="block mt-3 text-red-400 hover:text-red-300">
-      Sign Out
-    </button></a>
-  </div>
+    <div class="mt-6 text-sm text-gray-400">
+      Logged in as <span class="text-white">john</span>
+      <a href="index.html">
+        <button class="block mt-3 text-red-400 hover:text-red-300">Sign Out</button>
+      </a>
+    </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main class="flex-1 overflow-y-auto p-8">
 
     <!-- Header -->
@@ -55,109 +53,79 @@
         <h2 class="text-3xl font-bold text-white">Alerts</h2>
         <p class="text-gray-400">Stay informed about detections and community warnings</p>
       </div>
-      <button class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm flex items-center gap-2">
-        <i class="fa-solid fa-bell"></i>New Alert
+      <button id="newAlertBtn" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm flex items-center gap-2">
+        <i class="fa-solid fa-bell"></i> New Alert
       </button>
     </div>
 
-    <!-- Tabs -->
-    <div class="flex gap-4 mb-6 flex-wrap">
-      <button class="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition">All Alerts (4)</button>
-      <button class="px-4 py-2 bg-gray-800 text-gray-200 rounded-md hover:bg-gray-700 transition">Unread (2)</button>
-      <button class="px-4 py-2 bg-gray-800 text-gray-200 rounded-md hover:bg-gray-700 transition">Read (2)</button>
-    </div>
-
     <!-- Alert Cards -->
-    <div class="space-y-4">
+    <div id="alertsContainer" class="space-y-4"></div>
 
-      <!-- Alert 1 -->
-      <div class="flex justify-between items-start bg-gray-800 border border-white rounded-lg p-4 hover:shadow-md transition">
+  </main>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCw3kr1M6ZYBFzRH8w18BE0S7DV8-rkGTY",
+      authDomain: "shieldher-14107.firebaseapp.com",
+      databaseURL: "https://shieldher-14107-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "shieldher-14107",
+      storageBucket: "shieldher-14107.firebasestorage.app",
+      messagingSenderId: "1085993060746",
+      appId: "1:1085993060746:web:81cf85d4fb642ad7ae6073"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const alertsContainer = document.getElementById("alertsContainer");
+
+    // Function to create alert cards
+    function createAlertCard(alert) {
+      const div = document.createElement("div");
+      div.className = "flex justify-between items-start bg-gray-800 border border-white rounded-lg p-4 hover:shadow-md transition";
+
+      const severityColor = alert.severity === "high" ? "text-red-700" :
+                            alert.severity === "medium" ? "text-yellow-500" : "text-green-600";
+
+      div.innerHTML = `
         <div>
-          <h3 class="font-semibold text-red-700">Hidden Camera Detected</h3>
-          <p class="text-gray-400 text-sm mt-1">A hidden camera was reported at Hotel Downtown. Stay vigilant in similar locations.</p>
+          <h3 class="font-semibold ${severityColor}">${alert.title}</h3>
+          <p class="text-gray-400 text-sm mt-1">${alert.message}</p>
           <div class="flex items-center text-gray-500 text-xs mt-2 gap-4">
             <span class="flex items-center gap-1">
-              <i class="fa-solid fa-location-dot"></i> Hotel Downtown
+              <i class="fa-solid fa-location-dot"></i> ${alert.location}
             </span>
             <span class="flex items-center gap-1">
-              <i class="fa-solid fa-clock"></i> 345 days ago
+              <i class="fa-solid fa-clock"></i> ${alert.time}
             </span>
           </div>
         </div>
         <button class="bg-gray-200 text-gray-900 px-3 py-1 rounded-md text-sm hover:bg-gray-300 transition">Mark Read</button>
-      </div>
+      `;
+      alertsContainer.prepend(div);
+    }
 
-      <!-- Alert 2 -->
-      <div class="flex justify-between items-start bg-gray-800 border border-white rounded-lg p-4 hover:shadow-md transition">
-        <div>
-          <h3 class="font-semibold text-green-700">Location Cleared</h3>
-          <p class="text-gray-400 text-sm mt-1">Shopping Mall - Level 2 has been inspected and cleared. Reports have been resolved.</p>
-          <div class="flex items-center text-gray-500 text-xs mt-2 gap-4">
-            <span class="flex items-center gap-1">
-              <i class="fa-solid fa-location-dot"></i> Shopping Mall - Level 2
-            </span>
-            <span class="flex items-center gap-1">
-              <i class="fa-solid fa-clock"></i> 346 days ago
-            </span>
-          </div>
-        </div>
-        <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm hover:bg-gray-300 transition">Mark Read</button>
-      </div>
+    // Listen to Firebase for new alerts
+    db.ref("alerts").on("child_added", snapshot => {
+      const alert = snapshot.val();
+      createAlertCard(alert);
+    });
 
-      <!-- Alert 3 -->
-      <div class="flex justify-between items-start bg-gray-800 border border-white rounded-lg p-4 hover:shadow-md transition">
-        <div>
-          <h3 class="font-semibold text-red-600">Community Alert</h3>
-          <p class="text-gray-400 text-sm mt-1">High number of detections reported in Downtown area. Multiple surveillance devices found.</p>
-          <div class="flex items-center text-gray-500 text-xs mt-2 gap-4">
-            <span class="flex items-center gap-1">
-              <i class="fa-solid fa-location-dot"></i> Downtown Area
-            </span>
-            <span class="flex items-center gap-1">
-              <i class="fa-solid fa-clock"></i> 347 days ago
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Alert 4 -->
-      <div class="flex justify-between items-start bg-gray-800 border border-white rounded-lg p-4 hover:shadow-md transition">
-        <div>
-          <h3 class="font-semibold text-yellow-700">New Report Near You</h3>
-          <p class="text-gray-400 text-sm mt-1">A wireless device was detected at Train Station Restroom, 0.5 km from your location.</p>
-          <div class="flex items-center text-gray-500 text-xs mt-2 gap-4">
-            <span class="flex items-center gap-1">
-              <i class="fa-solid fa-location-dot"></i> Train Station Restroom
-            </span>
-            <span class="flex items-center gap-1">
-              <i class="fa-solid fa-clock"></i> 348 days ago
-            </span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Alert Preferences -->
-    <div class="mt-8 bg-gray-800 border border-gray-700 rounded-lg p-4">
-      <h3 class="font-semibold text-white mb-2">Alert Preferences</h3>
-      <div class="space-y-2 text-gray-200">
-        <label class="flex items-center gap-2">
-          <input type="checkbox" checked class="form-checkbox h-4 w-4 text-purple-600">
-          Receive alerts for new detections
-        </label>
-        <label class="flex items-center gap-2">
-          <input type="checkbox" checked class="form-checkbox h-4 w-4 text-purple-600">
-          Notify me about high-severity threats
-        </label>
-        <label class="flex items-center gap-2">
-          <input type="checkbox" checked class="form-checkbox h-4 w-4 text-purple-600">
-          Community warnings and location updates
-        </label>
-      </div>
-    </div>
-
-  </main>
-
+    // Optional: Add new alert manually for testing
+    document.getElementById("newAlertBtn").addEventListener("click", () => {
+      const newAlertRef = db.ref("alerts").push();
+      const now = new Date();
+      const alertData = {
+        title: "Test Alert",
+        message: "This is a new alert added at runtime!",
+        location: "Test Location",
+        time: now.toLocaleString(),
+        severity: "high"
+      };
+      newAlertRef.set(alertData);
+    });
+  </script>
 </body>
 </html>

@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>ShieldHer – Submit Report</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./output.css" rel="stylesheet">
   <link rel="stylesheet"
@@ -19,7 +18,6 @@
     <i class="fa-solid fa-shield-halved text-blue-700 text-3xl mb-8"></i>
     <h1 class="text-2xl font-bold text-white mb-8">Shield<span class="text-blue-700">Her</span></h1>
   </div>
-
   <nav class="flex-1 space-y-3 text-gray-300">
     <a href="dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Dashboard</a>
     <a href="Emergency Alert.html" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Emergency Alert</a>
@@ -36,7 +34,6 @@
 
 <!-- MAIN -->
 <main class="flex-1 p-10 overflow-y-auto">
-
   <h2 class="text-3xl font-bold text-white mb-6">
     <i class="fa-solid fa-file-circle-exclamation text-blue-600"></i>
     Submit Detection Report
@@ -77,28 +74,58 @@
   </div>
 </main>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
-function submitReport() {
-  const report = {
-    location: document.getElementById("location").value,
-    type: document.getElementById("type").value,
-    date: new Date().toISOString().split("T")[0],
-    severity: Math.floor(Math.random() * 5) + 1
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCw3kr1M6ZYBFzRH8w18BE0S7DV8-rkGTY",
+    authDomain: "shieldher-14107.firebaseapp.com",
+    databaseURL: "https://shieldher-14107-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "shieldher-14107",
+    storageBucket: "shieldher-14107.firebasestorage.app",
+    messagingSenderId: "1085993060746",
+    appId: "1:1085993060746:web:81cf85d4fb642ad7ae6073"
   };
 
-  if (!report.location) {
-    alert("Please enter location details");
-    return;
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function submitReport() {
+    const location = document.getElementById("location").value;
+    const type = document.getElementById("type").value;
+    const description = document.getElementById("description").value;
+    const contact = document.getElementById("contact").value;
+    const anonymous = document.getElementById("anonymous").checked;
+
+    if (!location) {
+      alert("Please enter location details");
+      return;
+    }
+
+    const report = {
+      location: location,
+      type: type,
+      description: description,
+      contact: anonymous ? "Anonymous" : contact || "N/A",
+      anonymous: anonymous,
+      time: new Date().toLocaleString(),
+      status: "unsafe"
+    };
+
+    // Push to Firebase
+    db.ref("reports").push(report, (error) => {
+      if (error) {
+        alert("Error submitting report: " + error);
+      } else {
+        alert("Report submitted successfully!");
+        window.location.href = "dashboard.html";
+      }
+    });
   }
-
-  const reports = JSON.parse(localStorage.getItem("reports")) || [];
-  reports.push(report);
-  localStorage.setItem("reports", JSON.stringify(reports));
-
-  alert("Report submitted successfully!");
-  window.location.href = "DetectionMap.html";
-}
 </script>
-
 </body>
 </html>
